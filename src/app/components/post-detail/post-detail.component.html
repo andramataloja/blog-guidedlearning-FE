@@ -1,0 +1,18 @@
+<button routerLink="/" class="back-button" mat-button>
+  <mat-icon class="back-icon">keyboard_backspace</mat-icon>Back
+</button>
+
+<div *ngIf="post$ | async as post" class="card-container">
+  <mat-card class="post-view">
+    <mat-card-header>
+      <mat-card-title>{{ post.title }}</mat-card-title>
+      <mat-card-subtitle>{{ post.createdAt | date: "full" }}</mat-card-subtitle>
+    </mat-card-header>
+    <img mat-card-image src="{{ post.img }}" alt="Post photo" />
+    <mat-card-content>
+      <p>
+        {{ post.content }}
+      </p>
+    </mat-card-content>
+  </mat-card>
+</div>

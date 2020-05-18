@@ -1,0 +1,28 @@
+.card-container {
+  display: flex;
+  justify-content: center;
+  margin: 40px;
+}
+
+.mat-button-toggle-checked {
+  background-color: white;
+  border: none;
+}
+
+.mat-button-toggle-group {
+  border: none;
+}
+
+.mat-button-toggle-checked.mat-button-toggle-appearance-standard {
+  color: rgb(255, 64, 130);
+}
+
+.sorting {
+  margin: 30px;
+}
+.to-detail {
+  text-decoration: none;
+}
+.post-list {
+  width: 500px;
+}

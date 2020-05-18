@@ -1,0 +1,19 @@
+.nav {
+  display: flex;
+  flex-direction: row;
+  width: 100%;
+}
+.menu-buttons {
+  display: flex;
+  justify-content: flex-end;
+  width: 100%;
+}
+
+.nav-button {
+  font-size: 18px;
+}
+
+.title {
+  font-size: 26px;
+  align-self: center;
+}

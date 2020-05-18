@@ -1,0 +1,39 @@
+<div *ngIf="post$ | async as post" class="card-container">
+  <mat-card class="add-card">
+    <mat-card-title class="add-title">Edit Post</mat-card-title>
+    <mat-card-content>
+      <form [formGroup]="editForm" (ngSubmit)="editPost()">
+        <div>
+          <mat-form-field appearance="outline" color="accent" class="input">
+            <mat-label>Title</mat-label>
+            <input
+              formControlName="title"
+              matInput
+              required
+              [(ngModel)]="form.title"
+            />
+          </mat-form-field>
+        </div>
+        <div>
+          <mat-form-field appearance="outline" color="accent" class="input">
+            <mat-label>Content</mat-label>
+            <textarea
+              formControlName="content"
+              matInput
+              required
+              [(ngModel)]="form.content"
+            ></textarea>
+          </mat-form-field>
+        </div>
+        <button
+          mat-raised-button
+          color="accent"
+          type="submit"
+          [disabled]="editForm.invalid"
+        >
+          Edit
+        </button>
+      </form>
+    </mat-card-content>
+  </mat-card>
+</div>
