@@ -6,8 +6,6 @@ import { PostsListComponent } from '../components/posts-list/posts-list.componen
 import { FormsModule } from '@angular/forms';
 import { SharedModule } from '../shared/shared.module';
 import { AppRoutingModule } from '../app-routing.module';
-import { NgxIndexedDBModule } from 'ngx-indexed-db';
-import { dbConfig } from 'src/environments/environment';
 import { PostDetailComponent } from 'src/app/components/post-detail/post-detail.component';
 import { EditPostComponent } from 'src/app/components/edit-post/edit-post.component';
 
@@ -19,18 +17,7 @@ import { EditPostComponent } from 'src/app/components/edit-post/edit-post.compon
     PostDetailComponent,
     EditPostComponent,
   ],
-  imports: [
-    CommonModule,
-    FormsModule,
-    SharedModule,
-    AppRoutingModule,
-    NgxIndexedDBModule.forRoot(dbConfig),
-  ],
-  exports: [
-    AppRoutingModule,
-    NgxIndexedDBModule,
-    NavigationComponent,
-    FormsModule,
-  ],
+  imports: [CommonModule, FormsModule, SharedModule, AppRoutingModule],
+  exports: [AppRoutingModule, NavigationComponent, FormsModule],
 })
 export class CoreModule {}

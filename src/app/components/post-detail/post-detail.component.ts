@@ -3,7 +3,7 @@ import { BlogService } from 'src/app/data-access/blog.service';
 import { BlogPost } from 'src/app/model/blog-post';
 import { Observable } from 'rxjs';
 import { ActivatedRoute, ParamMap } from '@angular/router';
-import { switchMap } from 'rxjs/operators';
+import { switchMap, map } from 'rxjs/operators';
 
 @Component({
   selector: 'app-post-detail',
@@ -18,12 +18,18 @@ export class PostDetailComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
+    this.getPost();
+  }
+
+  getPost(): void {
     this.post$ = this.route.paramMap.pipe(
       switchMap((params: ParamMap) =>
-        this.blogService.getPost(params.get('id')).then((post) => {
-          post.img = `https://picsum.photos/id/${post.id}/500/300`;
-          return post;
-        })
+        this.blogService.getPost(+params.get('id')).pipe(
+          map((post) => {
+            post.img = `https://picsum.photos/id/${post.id}/500/300`;
+            return post;
+          })
+        )
       )
     );
   }

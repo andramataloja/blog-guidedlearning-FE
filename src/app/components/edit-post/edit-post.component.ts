@@ -3,7 +3,7 @@ import { BlogService } from 'src/app/data-access/blog.service';
 import { ActivatedRoute, ParamMap } from '@angular/router';
 import { Observable, from } from 'rxjs';
 import { BlogPost } from 'src/app/model/blog-post';
-import { switchMap } from 'rxjs/operators';
+import { switchMap, map } from 'rxjs/operators';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { Router } from '@angular/router';
@@ -17,7 +17,7 @@ import { CanComponentDeactivate } from 'src/app/can-deactivate.guard';
 export class EditPostComponent implements OnInit, CanComponentDeactivate {
   post$: Observable<BlogPost>;
   public editForm: FormGroup;
-  private postId: string;
+  private postId: number;
 
   constructor(
     private blogService: BlogService,
@@ -44,11 +44,11 @@ export class EditPostComponent implements OnInit, CanComponentDeactivate {
   }
 
   ngOnInit(): void {
-    this.post$ = from(
-      this.route.paramMap.pipe(
-        switchMap((params: ParamMap) =>
-          this.blogService.getPost(params.get('id')).then((post) => {
-            this.postId = params.get('id');
+    this.post$ = this.route.paramMap.pipe(
+      switchMap((params: ParamMap) =>
+        this.blogService.getPost(+params.get('id')).pipe(
+          map((post) => {
+            this.postId = +params.get('id');
 
             this.editForm = this.fb.group({
               title: [post.title ? post.title : '', Validators.required],
@@ -68,9 +68,9 @@ export class EditPostComponent implements OnInit, CanComponentDeactivate {
   editPost(): void {
     this.saved = true;
     const edited = this.editForm.value;
-    edited.id = parseInt(this.postId);
+    edited.id = this.postId;
     edited.createdAt = new Date().toISOString();
-    this.blogService.editPost(edited).then(
+    this.blogService.editPost(edited).subscribe(
       (id) => {
         const snackBarRef = this.snackBar.open(
           'Blog post edited successfully',

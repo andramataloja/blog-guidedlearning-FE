@@ -3,6 +3,7 @@ import { Component, OnInit } from '@angular/core';
 import { BlogService } from 'src/app/data-access/blog.service';
 import { Observable, from } from 'rxjs';
 import { MatSnackBar } from '@angular/material/snack-bar';
+import { map } from 'rxjs/operators';
 
 @Component({
   selector: 'app-posts-list',
@@ -22,30 +23,26 @@ export class PostsListComponent implements OnInit {
   }
 
   private fetchPosts() {
-    this.posts$ = from(
-      this.blogService
-        .getPosts()
-        .then(this.sortByDescending)
-        .then((posts) => {
-          posts.forEach((post) => {
-            post.img = `https://picsum.photos/id/${post.id}/500/300`;
-          });
-          return posts;
-        })
+    this.posts$ = this.blogService.getPosts().pipe(
+      map((posts) => {
+        this.sortByDescending(posts);
+        posts.forEach((post) => {
+          post.img = `https://picsum.photos/id/${post.id}/500/300`;
+        });
+        return posts;
+      })
     );
   }
 
   private fetchPostsOldest() {
-    this.posts$ = from(
-      this.blogService
-        .getPosts()
-        .then(this.sortByAscending)
-        .then((posts) => {
-          posts.forEach((post) => {
-            post.img = `https://picsum.photos/id/${post.id}/500/300`;
-          });
-          return posts;
-        })
+    this.posts$ = this.blogService.getPosts().pipe(
+      map((posts) => {
+        this.sortByAscending(posts);
+        posts.forEach((post) => {
+          post.img = `https://picsum.photos/id/${post.id}/500/300`;
+        });
+        return posts;
+      })
     );
   }
 
@@ -66,7 +63,7 @@ export class PostsListComponent implements OnInit {
   }
 
   deletePost(post: BlogPost): void {
-    this.blogService.deletePost(post).then(() => {
+    this.blogService.deletePost(post).subscribe(() => {
       this.fetchPosts();
       this.snackBar.open('Blog post deleted successfully', '', {
         duration: 2000,

@@ -47,8 +47,7 @@ export class AddPostComponent implements OnInit, CanComponentDeactivate {
     this.saved = true;
     const post = this.postForm.value;
     post.createdAt = new Date().toISOString();
-    console.log('form', post);
-    this.blogService.addPost(post).then(
+    this.blogService.addPost(post).subscribe(
       (id) => {
         const snackBarRef = this.snackBar.open(
           'Blog post created successfully',

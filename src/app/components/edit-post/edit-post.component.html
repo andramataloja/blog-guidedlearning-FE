@@ -6,23 +6,13 @@
         <div>
           <mat-form-field appearance="outline" color="accent" class="input">
             <mat-label>Title</mat-label>
-            <input
-              formControlName="title"
-              matInput
-              required
-              [(ngModel)]="form.title"
-            />
+            <input formControlName="title" matInput required />
           </mat-form-field>
         </div>
         <div>
           <mat-form-field appearance="outline" color="accent" class="input">
             <mat-label>Content</mat-label>
-            <textarea
-              formControlName="content"
-              matInput
-              required
-              [(ngModel)]="form.content"
-            ></textarea>
+            <textarea formControlName="content" matInput required></textarea>
           </mat-form-field>
         </div>
         <button

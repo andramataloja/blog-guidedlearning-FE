@@ -1,31 +1,35 @@
 import { BlogPost } from './../model/blog-post';
 import { Injectable } from '@angular/core';
-import { NgxIndexedDBService } from 'ngx-indexed-db';
+import { HttpClient } from '@angular/common/http';
+import { Observable } from 'rxjs';
 
 @Injectable({
   providedIn: 'root',
 })
 export class BlogService {
-  constructor(private dbService: NgxIndexedDBService) {}
-
-  public addPost(post: BlogPost): Promise<Number> {
-    return this.dbService.add<BlogPost>('posts', post);
+  private postsUrl: string;
+  constructor(private http: HttpClient) {
+    this.postsUrl = 'http://localhost:8080/posts';
+  }
+  public getPosts(): Observable<BlogPost[]> {
+    return this.http.get<BlogPost[]>(this.postsUrl);
+  }
+  public addPost(post: BlogPost): Observable<BlogPost> {
+    return this.http.post<BlogPost>(this.postsUrl, post);
   }
 
-  public getPosts(): Promise<BlogPost[]> {
-    return this.dbService.getAll<BlogPost>('posts');
+  public getPost(id: number): Observable<BlogPost> {
+    const url = `${this.postsUrl}/${id}`;
+    return this.http.get<BlogPost>(url);
   }
 
-  public getPost(id: string): Promise<BlogPost> {
-    const key = parseInt(id);
-    return this.dbService.getByKey('posts', key);
+  public editPost(post: BlogPost): Observable<any> {
+    const url = `${this.postsUrl}/${post.id}`;
+    return this.http.put(url, post);
   }
 
-  public deletePost(post: BlogPost): Promise<any> {
-    return this.dbService.delete('posts', post.id);
-  }
-
-  public editPost(post: BlogPost): Promise<Number> {
-    return this.dbService.update<BlogPost>('posts', post);
+  public deletePost(post: BlogPost): Observable<any> {
+    const url = `${this.postsUrl}/${post.id}`;
+    return this.http.delete<BlogPost>(url);
   }
 }
